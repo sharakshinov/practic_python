@@ -1,4 +1,4 @@
-#Arrays
+# Arrays
 
 + [Merge two sorted arrays](#merge-two-sorted-arrays)
 
