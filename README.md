@@ -1,3 +1,5 @@
 # practic_python
 
-## Howework Unix 
+#### Howework Unix 
+
++ arrays.md -- задачи про массивы;
