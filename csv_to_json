@@ -1,0 +1,45 @@
+import csv
+import json
+
+
+class Reader:
+    """ Read data in file """
+    def __init__(self, input_file):
+        self.file = open(input_file)
+
+    def close(self):
+        self.file.close()
+
+
+class Writer:
+    """ Write data in file """
+    def __init__(self, output_file):
+        self.output_file = output_file
+
+    def write(self, data):
+        file = open(self.output_file, 'w')
+        file.write(data)
+        file.close()
+
+
+class CsvToJsonConverter:
+    """ Convert data to json format """
+    def convert(self, file_reader: Reader) -> str:
+        data_csv = csv.DictReader(file_reader.file)
+        data_json = [json.dumps(d, indent=4) for d in data_csv]
+        return str(data_json)
+
+
+def main():
+
+    reader = Reader('input.csv')
+    converter = CsvToJsonConverter()
+    data = converter.convert(reader)
+    reader.close()
+    writer = Writer('output.json')
+    writer.write(data)
+
+
+if __name__ == "__main__":
+    main()
+
