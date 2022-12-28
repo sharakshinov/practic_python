@@ -14,6 +14,8 @@ class StrategyDeal:
     def get_target_banks(self, target):
         return self.bank * target / self.entry
 
+    def __str__(self):
+        return f'{self.bank}\n{self.entry}\n{self.targets}\n{ self.close}\n '
 
 def read_data(file_name):
     file = open(file_name)
@@ -32,11 +34,9 @@ def parse_data(data, split_symbol='-----'):
     bank = None
     entry = None
     close = None
-    targets =[]
-    gg = 0
-    deals_data = data.split(split_symbol)
+    targets = []
     deals = []
-    for row in data:
+    for row in data.split("\n\n"):
         if row.startswith('Bank:'):
             first_index = row.find('Bank:')
             second_index = row.find('USD')
@@ -59,16 +59,22 @@ def parse_data(data, split_symbol='-----'):
             first_index = row.find('Close: ')
             second_index = row.find('USD')
             close = float(row[first_index + len('Close: '): second_index])
-
-        deals.append(StrategyDeal(bank=bank, entry=entry, targets=targets, close=close))
+        elif bank and entry and targets and close:
+            deals.append(StrategyDeal(bank=bank, entry=entry, targets=targets, close=close))
+            bank = None
+            entry = None
+            close = None
+            targets = []
     return deals
 
 
 def main():
     content = read_data('deal.txt')
-    print(parse_data(content))
+    result = parse_data(content)
+    for elem in result:
+        print(elem)
 
-# write_data('out.txt', result)
+    #write_data('out.txt', result)
 
 
 if __name__ == '__main__':
